@@ -9,11 +9,11 @@
         <p>Categoria: <?= $produto[0]['categoria_nome'] ?></p>
     <?php endif; ?>
     <br/>
-    <form action="/Programacao-Web-PHP/avaliacao/produtos/criar" method="GET">
+    <form action="/AvaliacaoQuatroPHP/avaliacao/produtos/criar" method="GET">
         <input type="hidden" name="id" value="<?= $produto[0]['id'] ?>">
         <button>Editar</button>
     </form>
-    <form action="/Programacao-Web-PHP/avaliacao/produtos">
+    <form action="/AvaliacaoQuatroPHP/avaliacao/produtos">
         <button>Voltar</button>
     </form>
 </div>

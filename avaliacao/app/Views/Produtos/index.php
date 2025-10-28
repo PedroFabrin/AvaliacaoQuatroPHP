@@ -3,20 +3,20 @@
 <ul>
     <?php foreach($produtos as $item): ?>
         <li>
-            <a href="/Programacao-Web-PHP/avaliacao/produtos/ver?id=<?= $item['id'] ?>">
+            <a href="/AvaliacaoQuatroPHP/avaliacao/produtos/ver?id=<?= $item['id'] ?>">
                 <?= $item['nome'] ?> (<?= $item['categoria_nome'] ?>)
             </a>
-            <form action="/Programacao-Web-PHP/avaliacao/api/produtos/deletar" method="POST">
+            <form action="/AvaliacaoQuatroPHP/avaliacao/api/produtos/deletar" method="POST">
                 <input type="hidden" name="id" value="<?= $item["id"] ?>"/>
                 <button type="submit">Excluir</button>
             </form>
         </li>
     <?php endforeach; ?>
     <br/>
-    <form action="/Programacao-Web-PHP/avaliacao/produtos/criar">
+    <form action="/AvaliacaoQuatroPHP/avaliacao/produtos/criar">
         <button>Criar</button>
     </form>
-    <form action="/Programacao-Web-PHP/avaliacao/categorias">
+    <form action="/AvaliacaoQuatroPHP/avaliacao/categorias">
         <button>Categorias</button>
     </form>
 </ul>

@@ -6,11 +6,11 @@
         <p>Nome: <?= $cat['nome'] ?></p>  
     <?php endif; ?>
     <br/>
-    <form action="/Programacao-Web-PHP/avaliacao/categorias/criar" method="GET">
+    <form action="/AvaliacaoQuatroPHP/avaliacao/categorias/criar" method="GET">
         <input type="hidden" name="id" value="<?= $cat['id'] ?>">
         <button>Editar</button>
     </form>
-    <form action="/Programacao-Web-PHP/avaliacao/categorias">
+    <form action="/AvaliacaoQuatroPHP/avaliacao/categorias">
         <button>Voltar</button>
     </form>
 </div>

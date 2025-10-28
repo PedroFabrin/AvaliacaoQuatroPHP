@@ -16,7 +16,7 @@
     }
 
     //Variavel basedir
-    $basedir = "/Programacao-Web-PHP/avaliacao";
+    $basedir = "/AvaliacaoQuatroPHP/avaliacao";
 
     //Pegar URL Crua (Sem Tratamento)
     $uri = $_SERVER["REQUEST_URI"] ?? "/";
@@ -79,20 +79,20 @@
 
     if($uri === '/api/categorias' && $metodo == 'POST'){
         echo (new CategoriaController())->create();
-        header('location: /Programacao-Web-PHP/avaliacao/categorias');
+        header('location: /AvaliacaoQuatroPHP/avaliacao/categorias');
         exit;
     }
 
     if($uri === '/api/categorias/deletar' && $metodo == 'POST'){
         $id = (int)($_POST['id'] ?? 0);
         echo (new CategoriaController())->delete($id);
-        header('location: /Programacao-Web-PHP/avaliacao/categorias');
+        header('location: /AvaliacaoQuatroPHP/avaliacao/categorias');
         exit;
     }
 
     if($uri === '/api/categorias/atualizar' && $metodo == 'POST'){
         echo (new CategoriaController())->update();
-        header('location: /Programacao-Web-PHP/avaliacao/categorias');
+        header('location: /AvaliacaoQuatroPHP/avaliacao/categorias');
         exit;
     }
 
@@ -104,20 +104,20 @@
 
     if($uri === '/api/produtos' && $metodo == 'POST'){
         echo (new ProdutoController())->create();
-        header('location: /Programacao-Web-PHP/avaliacao/produtos');
+        header('location: /AvaliacaoQuatroPHP/avaliacao/produtos');
         exit;
     }
 
     if($uri === '/api/produtos/deletar' && $metodo == 'POST'){
         $id = (int)($_POST['id'] ?? 0);
         echo (new ProdutoController())->delete($id);
-        header('location: /Programacao-Web-PHP/avaliacao/produtos');
+        header('location: /AvaliacaoQuatroPHP/avaliacao/produtos');
         exit;
     }
 
     if($uri === '/api/produtos/atualizar' && $metodo == 'POST'){
         echo (new ProdutoController())->update();
-        header('location: /Programacao-Web-PHP/avaliacao/produtos');
+        header('location: /AvaliacaoQuatroPHP/avaliacao/produtos');
         exit;
     }
 ?> 

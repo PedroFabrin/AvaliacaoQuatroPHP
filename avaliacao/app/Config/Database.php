@@ -10,7 +10,7 @@ class Database {
     public static function getConnection(): PDO {
         if(self::$conn) return self::$conn;
 
-        $host = "127.0.0.1:3307";
+        $host = "db";
         $dbname = "atividade_db";
         $user = "root";
         $pass = "";
