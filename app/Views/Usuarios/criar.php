@@ -1,6 +1,6 @@
 <p><?= isset($usuario) ? "Editar Usuario" : "Criar Usuario" ?></p>
 
-<form method="POST" action="<?= isset($usuario) ? '/api/usuario/atualizar' : '/api/usario' ?>">
+<form method="POST" action="<?= isset($usuario) ? '/api/usuarios/atualizar' : '/api/usuarios' ?>">
     
     <?php if (isset($usuario)): ?>
         <input type="hidden" name="id" value="<?= $usuario[0]['id'] ?>">
@@ -22,7 +22,7 @@
         required
     />
     <br/>
-    <script>
+    <!-- <script>
     document.getElementById('cpf').addEventListener('input', function (e) {
         let value = e.target.value.replace(/\D/g, ''); // remove tudo que não for número
         if (value.length > 11) value = value.slice(0, 11);
@@ -31,7 +31,7 @@
         value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
         e.target.value = value;
     });
-    </script>
+    </script> -->
 
 
 
@@ -43,6 +43,6 @@
 </form>
 
 <br/>
-<form action="/Programacao-Web-PHP/avaliacao/produtos">
+<form action="/produtos">
     <button>Voltar</button>
 </form>

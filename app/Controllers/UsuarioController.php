@@ -45,7 +45,7 @@
 
             $nome = $_POST['nome'];
             $cpf =  $_POST['cpf'];
-            $senha =  $_POST['senha']
+            $senha =  $_POST['senha'];
 
             $usuarioService->create($nome, $cpf, $senha);
         }

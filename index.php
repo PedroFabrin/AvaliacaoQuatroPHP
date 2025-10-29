@@ -5,6 +5,8 @@
     //Chamar a Classe
     use App\Controllers\CategoriaController;
     use App\Controllers\ProdutoController;
+    use App\Controllers\UsuarioController;
+    use App\Controllers\LoginController;
 
     //Simulando um DataBase
     session_start();
@@ -13,6 +15,9 @@
     }
     if(!isset($_SESSION['produtos'])){
         $_SESSION['produtos'] = [['id' => 1, 'nome' => 'Computador'],['id' => 2, 'nome' => 'Tablet']];
+    }
+    if(!isset($_SESSION['usuarios'])){
+        $_SESSION['usuarios'] = [['id'=> 1, 'nome' => 'User'], ['id'=> 2, 'nome'=> 'User2']];
     }
 
     //Variavel basedir
@@ -70,6 +75,15 @@
             echo (new ProdutoController())->ver($id);
             exit;
         }
+
+        if($uri === "/Login/autenticar"){
+            echo (new LoginController())->index();
+            exit;
+        }
+        if($uri === "/usuarios/criar"){
+            echo (new UsuarioController())->criar();
+            exit;
+        }
     }
 
     if($uri === '/api/categorias' && $metodo == 'GET'){
@@ -118,6 +132,18 @@
     if($uri === '/api/produtos/atualizar' && $metodo == 'POST'){
         echo (new ProdutoController())->update();
         header('location: /produtos');
+        exit;
+    }
+
+    if($uri === '/api/Login' && $metodo == 'POST'){
+        echo (new LoginController())->autenticar();
+        header('Location: /produtos/ver');
+        exit;
+    }
+
+    if($uri === '/api/usuarios' && $metodo == 'POST'){
+        echo (new UsuarioController())->create();
+        header('location: /usuarios');
         exit;
     }
 ?> 

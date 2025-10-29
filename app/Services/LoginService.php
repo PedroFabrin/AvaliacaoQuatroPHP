@@ -7,7 +7,7 @@ use PDO;
 class LoginService{
     private PDO $db;
     public function __construct(){
-        $this->db = Database::getInstance();
+        $this->db = Database::getConnection();
     }
 
     public function autenticar(string $cpf, string $senha){

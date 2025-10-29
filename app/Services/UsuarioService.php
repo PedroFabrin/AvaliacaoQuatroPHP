@@ -25,9 +25,6 @@ class UsuarioService {
         // Verifica se tem 11 dígitos
         if (strlen($cpf) != 11) return false;
 
-        // Elimina CPFs com todos os dígitos iguais
-        if (preg_match('/(\d)\1{10}/', $cpf)) return false;
-
         // Validação dos dígitos verificadores
         for ($t = 9; $t < 11; $t++) {
             $d = 0;
@@ -48,13 +45,14 @@ class UsuarioService {
         string $nome,
         string $cpf,
         string $senha
-    ) {
+    ) 
+    {
         // Valida CPF antes de inserir
-        if (!$this->validarCPF($cpf)) {
-            throw new Exception("CPF inválido.");
-        }
+        // if (!$this->validarCPF($cpf)) {
+        //     throw new Exception("CPF inválido.");
+        // }
 
-        $sql = "INSERT INTO usuario (
+        $sql = "INSERT INTO usuarios (
             nome, cpf, senha
         ) VALUES (:nome, :cpf, :senha)";
 
@@ -78,11 +76,11 @@ class UsuarioService {
         string $senha
     ) {
         // Valida CPF antes de atualizar
-        if (!$this->validarCPF($cpf)) {
-            throw new Exception("CPF inválido.");
-        }
+        // if (!$this->validarCPF($cpf)) {
+        //     throw new Exception("CPF inválido.");
+        // }
 
-        $sql = "UPDATE usuario 
+        $sql = "UPDATE usuarios 
                 SET nome = :nome,
                     cpf = :cpf,
                     senha = :senha
@@ -102,7 +100,7 @@ class UsuarioService {
      * Exclui um usuário
      */
     public function delete(int $id) {
-        $sql = "DELETE FROM usuario WHERE id = :id";
+        $sql = "DELETE FROM usuarios WHERE id = :id";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([':id' => $id]);
     }
@@ -117,7 +115,7 @@ class UsuarioService {
         }
 
         $sql = "SELECT u.* 
-                FROM usuario u
+                FROM usuarios u
                 $where";
 
         $stmt = $this->db->prepare($sql);

@@ -24,7 +24,7 @@ class LoginController {
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['usuario_nome'] = $usuario['nome'];
 
-            header('Location: /Produtos/Index');
+            header('Location: /produtos/index.php');
             exit;
         } else{
             $erro = "Cpf ou Senha inválidos";
