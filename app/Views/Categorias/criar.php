@@ -1,6 +1,6 @@
 <p><?= isset($categoria) ? "Editar Categoria" : "Criar Categoria" ?></p>
 
-<form method="POST" action="<?= isset($categoria)? '/AvaliacaoQuatroPHP/avaliacao/api/categorias/atualizar': '/AvaliacaoQuatroPHP/avaliacao/api/categorias' ?>">
+<form method="POST" action="<?= isset($categoria)? '/api/categorias/atualizar': '/api/categorias' ?>">
 
     <?php if (isset($categoria)): ?>
         <input type="hidden" name="id" value="<?= $categoria[0]['id'] ?>">
@@ -12,6 +12,6 @@
 
 </form>
 <br/>
-<form action="/AvaliacaoQuatroPHP/avaliacao/categorias">
+<form action="/categorias">
     <button>Voltar</button>
 </form>

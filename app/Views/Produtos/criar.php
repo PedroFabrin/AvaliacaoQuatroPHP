@@ -1,6 +1,6 @@
 <p><?= isset($produto) ? "Editar Produto" : "Criar Produto" ?></p>
 
-<form method="POST" action="<?= isset($produto) ? '/AvaliacaoQuatroPHP/avaliacao/api/produtos/atualizar' : '/AvaliacaoQuatroPHP/avaliacao/api/produtos' ?>">
+<form method="POST" action="<?= isset($produto) ? '/api/produtos/atualizar' : '/api/produtos' ?>">
     
     <?php if (isset($produto)): ?>
         <input type="hidden" name="id" value="<?= $produto[0]['id'] ?>">
@@ -32,6 +32,6 @@
 </form>
 
 <br/>
-<form action="/AvaliacaoQuatroPHP/avaliacao/produtos">
+<form action="/produtos">
     <button>Voltar</button>
 </form>

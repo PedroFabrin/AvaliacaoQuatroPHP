@@ -16,7 +16,7 @@
     }
 
     //Variavel basedir
-    $basedir = "/AvaliacaoQuatroPHP/avaliacao";
+    $basedir = "";
 
     //Pegar URL Crua (Sem Tratamento)
     $uri = $_SERVER["REQUEST_URI"] ?? "/";
@@ -79,20 +79,20 @@
 
     if($uri === '/api/categorias' && $metodo == 'POST'){
         echo (new CategoriaController())->create();
-        header('location: /AvaliacaoQuatroPHP/avaliacao/categorias');
+        header('location: /categorias');
         exit;
     }
 
     if($uri === '/api/categorias/deletar' && $metodo == 'POST'){
         $id = (int)($_POST['id'] ?? 0);
         echo (new CategoriaController())->delete($id);
-        header('location: /AvaliacaoQuatroPHP/avaliacao/categorias');
+        header('location: /categorias');
         exit;
     }
 
     if($uri === '/api/categorias/atualizar' && $metodo == 'POST'){
         echo (new CategoriaController())->update();
-        header('location: /AvaliacaoQuatroPHP/avaliacao/categorias');
+        header('location: /categorias');
         exit;
     }
 
@@ -104,20 +104,20 @@
 
     if($uri === '/api/produtos' && $metodo == 'POST'){
         echo (new ProdutoController())->create();
-        header('location: /AvaliacaoQuatroPHP/avaliacao/produtos');
+        header('location: /produtos');
         exit;
     }
 
     if($uri === '/api/produtos/deletar' && $metodo == 'POST'){
         $id = (int)($_POST['id'] ?? 0);
         echo (new ProdutoController())->delete($id);
-        header('location: /AvaliacaoQuatroPHP/avaliacao/produtos');
+        header('location: /produtos');
         exit;
     }
 
     if($uri === '/api/produtos/atualizar' && $metodo == 'POST'){
         echo (new ProdutoController())->update();
-        header('location: /AvaliacaoQuatroPHP/avaliacao/produtos');
+        header('location: /produtos');
         exit;
     }
 ?> 

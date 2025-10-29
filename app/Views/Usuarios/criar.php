@@ -1,6 +1,6 @@
 <p><?= isset($usuario) ? "Editar Usuario" : "Criar Usuario" ?></p>
 
-<form method="POST" action="<?= isset($usuario) ? '/AvaliacaoQuatroPHP/avaliacao/api/usuario/atualizar' : '/AvaliacaoQuatroPHP/avaliacao/api/usario' ?>">
+<form method="POST" action="<?= isset($usuario) ? '/api/usuario/atualizar' : '/api/usario' ?>">
     
     <?php if (isset($usuario)): ?>
         <input type="hidden" name="id" value="<?= $usuario[0]['id'] ?>">
