@@ -93,20 +93,20 @@
 
     if($uri === '/api/categorias' && $metodo == 'POST'){
         echo (new CategoriaController())->create();
-        header('location: /categorias');
+        header('Location: /categorias');
         exit;
     }
 
     if($uri === '/api/categorias/deletar' && $metodo == 'POST'){
         $id = (int)($_POST['id'] ?? 0);
         echo (new CategoriaController())->delete($id);
-        header('location: /categorias');
+        header('Location: /categorias');
         exit;
     }
 
     if($uri === '/api/categorias/atualizar' && $metodo == 'POST'){
         echo (new CategoriaController())->update();
-        header('location: /categorias');
+        header('Location: /categorias');
         exit;
     }
 
@@ -118,20 +118,20 @@
 
     if($uri === '/api/produtos' && $metodo == 'POST'){
         echo (new ProdutoController())->create();
-        header('location: /produtos');
+        header('Location: /produtos');
         exit;
     }
 
     if($uri === '/api/produtos/deletar' && $metodo == 'POST'){
         $id = (int)($_POST['id'] ?? 0);
         echo (new ProdutoController())->delete($id);
-        header('location: /produtos');
+        header('Location: /produtos');
         exit;
     }
 
     if($uri === '/api/produtos/atualizar' && $metodo == 'POST'){
         echo (new ProdutoController())->update();
-        header('location: /produtos');
+        header('Location: /produtos');
         exit;
     }
 
@@ -143,7 +143,7 @@
 
     if($uri === '/api/usuarios' && $metodo == 'POST'){
         echo (new UsuarioController())->create();
-        header('location: /usuarios');
+        header('Location: /usuarios');
         exit;
     }
 ?> 
