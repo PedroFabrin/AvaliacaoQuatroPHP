@@ -10,10 +10,6 @@
 
     //Simulando um DataBase
     session_start();
-    if(!isset($_SESSION['usuarios_id'])){
-        header('Location: /login');
-        exit;
-    }
 
     //Variavel basedir
     $basedir = "";
@@ -38,6 +34,12 @@
 
     //Criação de Roda das Views
     if($metodo == 'GET'){
+
+        if(!isset($_SESSION['usuario_id']) && $uri != '/login' && $uri != '/usuarios/criar'){   
+            header('Location: /login');
+            exit;
+        }
+
         //Rotas de Categoria
         if($uri === "/categorias"){
             echo (new CategoriaController())->index();

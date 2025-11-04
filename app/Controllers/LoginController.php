@@ -23,8 +23,7 @@ class LoginController {
         $usuario = $this->service->autenticar($cpf, $senha);
 
         if($usuario){
-            if(!$_SESSION){
-                session_start();
+            if(!isset($_SESSION['usuario_id'])){
                 $_SESSION['usuario_id'] = $usuario['id'];
                 $_SESSION['usuario_nome'] = $usuario['nome'];   
             }
