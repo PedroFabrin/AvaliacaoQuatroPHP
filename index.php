@@ -76,7 +76,7 @@
             exit;
         }
 
-        if($uri === "/Login/autenticar"){
+        if($uri === "/login"){
             echo (new LoginController())->index();
             exit;
         }
@@ -135,7 +135,7 @@
         exit;
     }
 
-    if($uri === '/api/Login' && $metodo == 'POST'){
+    if($uri === '/api/login' && $metodo == 'POST'){
         echo (new LoginController())->autenticar();
         header('Location: /produtos/ver');
         exit;
@@ -143,7 +143,17 @@
 
     if($uri === '/api/usuarios' && $metodo == 'POST'){
         echo (new UsuarioController())->create();
+<<<<<<< Updated upstream
         header('Location: /usuarios');
+=======
+        header('location: /login');
+        exit;
+    }
+
+    if($uri === '/api/usuarios/sair'){
+        echo (new UsuarioController())->sair();
+        header('location: /login');
+>>>>>>> Stashed changes
         exit;
     }
 ?> 
