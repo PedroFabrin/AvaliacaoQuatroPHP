@@ -3,26 +3,14 @@
 
  use App\Views\Render;
  use App\Services\UsuarioService;
+ use App\Controllers\LoginController;
 
  class UsuarioController{
-    public function index(): string{
-        $categoriaService = new UsuarioService();
-        $title = "Usuários";
-        $categorias = $categoriaService->list();
-        return (new Render())->render('usuarios/index', compact('title', "usuarios"));
-    }
 
     public function criar(): string{
         $title = "Criar Usuarios";
-        $categoria = null;
-
-        if (isset($_GET['id'])) {
-            $categoriaService = new CategoriaService();
-            $id = (int) $_GET['id'];
-            $categoria = $categoriaService->list($id);
-            $title = "Editar Usuario";
-        }
-        return (new Render())->render('usuarios/criar', compact('title', 'usuarios'));
+        $noHeader = true; 
+        return (new Render())->render('usuarios/criar', compact('title', 'noHeader'));
     }
 
     public function ver(int $id): string{
@@ -72,5 +60,10 @@
         }
     }
 
- }
+    public function sair(){
+        $loginController = new LoginController();
+        $loginController->logout();
+    }
+
+}
 ?>

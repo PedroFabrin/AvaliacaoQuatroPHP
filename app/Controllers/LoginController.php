@@ -10,6 +10,9 @@ class LoginController {
     }
 
     public function index(){
+        $title = "Login";
+        $noHeader = true; 
+
         require __DIR__ . '/../Views/Login/index.php';
     }
     
@@ -20,11 +23,13 @@ class LoginController {
         $usuario = $this->service->autenticar($cpf, $senha);
 
         if($usuario){
-            session_start();
-            $_SESSION['usuario_id'] = $usuario['id'];
-            $_SESSION['usuario_nome'] = $usuario['nome'];
+            if(!$_SESSION){
+                session_start();
+                $_SESSION['usuario_id'] = $usuario['id'];
+                $_SESSION['usuario_nome'] = $usuario['nome'];   
+            }
 
-            header('Location: /produtos/index.php');
+            header('Location: /produtos');
             exit;
         } else{
             $erro = "Cpf ou Senha inválidos";
@@ -33,9 +38,8 @@ class LoginController {
     }
 
     public function logout(){
-        session_start();
         session_destroy();
-        header('Location: /Login/index.php');
+        header('Location: /login');
         exit;
     }
 }
