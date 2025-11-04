@@ -12,5 +12,14 @@ CREATE TABLE produtos (
   nome VARCHAR(120) NOT NULL,
   valor DECIMAL(10,2) NOT NULL,
   quantidade INT NOT NULL DEFAULT 0,
+  categorias_id INT NOT NULL,
+  FOREIGN KEY (categorias_id) REFERENCES categorias(id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  cpf VARCHAR(14) NOT NULL,
+  senha VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
