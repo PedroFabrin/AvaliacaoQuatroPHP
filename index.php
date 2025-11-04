@@ -10,14 +10,9 @@
 
     //Simulando um DataBase
     session_start();
-    if(!isset($_SESSION['categorias'])){
-        $_SESSION['categorias'] = [['id' => 1, 'nome' => 'Eletronicos'],['id' => 2, 'nome' => 'Livros']];
-    }
-    if(!isset($_SESSION['produtos'])){
-        $_SESSION['produtos'] = [['id' => 1, 'nome' => 'Computador'],['id' => 2, 'nome' => 'Tablet']];
-    }
-    if(!isset($_SESSION['usuarios'])){
-        $_SESSION['usuarios'] = [['id'=> 1, 'nome' => 'User'], ['id'=> 2, 'nome'=> 'User2']];
+    if(!isset($_SESSION['usuarios_id'])){
+        header('Location: /login');
+        exit;
     }
 
     //Variavel basedir
@@ -143,9 +138,7 @@
 
     if($uri === '/api/usuarios' && $metodo == 'POST'){
         echo (new UsuarioController())->create();
-<<<<<<< Updated upstream
         header('Location: /usuarios');
-=======
         header('location: /login');
         exit;
     }
@@ -153,7 +146,6 @@
     if($uri === '/api/usuarios/sair'){
         echo (new UsuarioController())->sair();
         header('location: /login');
->>>>>>> Stashed changes
         exit;
     }
 ?> 
