@@ -1,0 +1,57 @@
+name: CI/CD - Deploy na Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Baixar o código
+      - name: ⬇️ Baixar o código
+        uses: actions/checkout@v3
+
+      # 2️⃣ Subir containers do Docker (para teste local no CI)
+      - name: 🐳 Subir containers
+        run: docker-compose up -d
+
+      # 3️⃣ Esperar o MySQL inicializar
+      - name: ⏱️ Esperar MySQL
+        run: |
+          echo "Aguardando MySQL iniciar..."
+          sleep 15
+
+      # 4️⃣ Rodar teste de conexão PHP + MySQL
+      - name: 🧪 Testar conexão MySQL
+        run: |
+          docker-compose exec -T app php /var/www/html/ci-test.php
+
+      # 5️⃣ Derrubar containers após o teste
+      - name: 🧹 Derrubar containers
+        if: always()
+        run: docker-compose down
+
+      # 6️⃣ Fazer deploy no servidor (só se o teste acima passou)
+      - name: 🚀 Deploy no Servidor via SSH
+        if: success()
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: ${{ secrets.HOST_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            echo "Iniciando deploy..."
+            cd /home/root/avaliacao
+
+            # Atualiza código
+            git pull origin main
+
+            # Reinicia containers
+            docker compose down
+            docker compose up -d --build
+
+            echo "✅ Deploy finalizado com sucesso!"
