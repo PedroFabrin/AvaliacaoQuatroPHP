@@ -31,7 +31,7 @@
 #           echo "Aguardando MySQL iniciar..."
 #           sleep 15
 
-#       # 5️⃣ Testar conexão PHP + MySQL
+#       # 5️⃣ Testar PHP + MySQL
 #       - name: 🧪 Testar conexão MySQL
 #         run: |
 #           docker-compose exec -T app php /var/www/html/ci-test.php
@@ -86,6 +86,28 @@ jobs:
     steps:
     - name: Checkout código
       uses: actions/checkout@v3
+
+    - name: 🧩 Instalar Docker Compose
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y docker-compose
+
+    - name: 🐳 Subir containers para teste
+      run: |
+        docker-compose up -d
+
+    - name: ⏱️ Esperar MySQL iniciar
+      run: |
+        echo "Aguardando MySQL iniciar..."
+        sleep 15
+
+    - name: 🧪 Testar conexão PHP + MySQL
+      run: |
+        docker-compose exec -T app php /var/www/html/ci-test.php
+
+    - name: 🧹 Derrubar containers após o teste
+      if: always()
+      run: docker-compose down -v
 
     - name: Configurar chave SSH
       run: |
