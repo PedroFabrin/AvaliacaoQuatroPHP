@@ -20,7 +20,7 @@
 </style>
 
 <div style="display: flex; justify-content: center; align-items: center; height: 100vh;
-            background: linear-gradient(135deg, #e91e63, #9e9e9e);">
+            background: linear-gradient(135deg, #555060, #9e9e9e);">
 
     <div style="text-align: center; background-color: #ffffff; padding: 40px; border-radius: 12px;
                 box-shadow: 0 0 15px rgba(0,0,0,0.15); width: 350px;">
