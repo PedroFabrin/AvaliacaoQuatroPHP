@@ -17,8 +17,8 @@ jobs:
       # 2️⃣ Subir containers do Docker (para teste local no CI)
       - name: 🐳 Subir containers
         run: |
-        cd /home/root/avaliacao
-        docker-compose up -d
+          cd /home/root/avaliacao
+          docker-compose up -d
 
       # 3️⃣ Esperar o MySQL inicializar
       - name: ⏱️ Esperar MySQL
