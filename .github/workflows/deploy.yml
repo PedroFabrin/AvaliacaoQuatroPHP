@@ -16,7 +16,7 @@ jobs:
 
       # 2️⃣ Subir containers do Docker (para teste local no CI)
       - name: 🐳 Subir containers
-        run: 
+        run: |
         cd /home/root/avaliacao
         docker-compose up -d
 
