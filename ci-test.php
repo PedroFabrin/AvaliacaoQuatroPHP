@@ -1,7 +1,7 @@
 <?php
 echo "Iniciando teste de conexão MySQL...\n";
 
-$host = getenv('DB_HOST') ?: 'DB_HOST';
+$host = getenv('DB_HOST') ?: 'db';
 $db   = getenv('DB_DATABASE');
 $user = getenv('DB_USERNAME');
 $pass = getenv('DB_PASSWORD');
