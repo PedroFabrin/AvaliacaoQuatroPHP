@@ -1,27 +1,72 @@
-- name: 🚀 Deploy no Servidor via SSH
-  uses: appleboy/ssh-action@v0.1.10
-  with:
-    host: ${{ secrets.HOST_IP }}
-    username: ${{ secrets.HOST_USERNAME }}
-    key: ${{ secrets.SSH_PRIVATE_KEY }}
-    port: 22
-    timeout: 600
-    command_timeout: 300
-    script_stop: true
-    script: |
-      echo "🚀 Iniciando deploy..."
+name: CI/CD - Deploy na Main
 
-      cd /home/root/avaliacao
+on:
+  push:
+    branches:
+      - main
 
-      echo "🔄 Atualizando código..."
-      git fetch --all
-      git reset --hard origin/main
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
 
-      echo "🧹 Limpando containers antigos..."
-      docker compose down -v || true
+    steps:
+      # 1️⃣ Baixar o código
+      - name: ⬇️ Baixar o código
+        uses: actions/checkout@v3
 
-      echo "🐳 Subindo containers..."
-      docker compose pull
-      docker compose up -d
+      # 2️⃣ Instalar Docker Compose
+      - name: 🧩 Instalar Docker Compose
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y docker-compose
 
-      echo "✅ Deploy finalizado com sucesso!"
+      # 3️⃣ Subir containers para teste
+      - name: 🐳 Subir containers
+        run: |
+          docker-compose up -d
+
+      # 4️⃣ Esperar o MySQL iniciar
+      - name: ⏱️ Esperar MySQL
+        run: |
+          echo "Aguardando MySQL iniciar..."
+          sleep 15
+
+      # 5️⃣ Testar conexão PHP + MySQL
+      - name: 🧪 Testar conexão MySQL
+        run: |
+          docker-compose exec -T app php /var/www/html/ci-test.php
+
+      # 6️⃣ Derrubar containers após o teste
+      - name: 🧹 Derrubar containers
+        if: always()
+        run: docker-compose down -v
+
+      # 7️⃣ Fazer deploy no servidor via SSH (somente se o teste passou)
+      - name: 🚀 Deploy no Servidor via SSH
+        if: success()
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: ${{ secrets.HOST_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          timeout: 600
+          command_timeout: 300
+          script_stop: true
+          script: |
+            echo "🚀 Iniciando deploy..."
+
+            cd /home/root/avaliacao
+
+            echo "🔄 Atualizando código..."
+            git fetch --all
+            git reset --hard origin/main
+
+            echo "🧹 Derrubando containers antigos..."
+            docker compose down -v || true
+
+            echo "🐳 Subindo containers..."
+            docker compose pull
+            docker compose up -d
+
+            echo "✅ Deploy finalizado com sucesso!"
