@@ -1,64 +1,27 @@
-name: CI/CD - Deploy na Main
+- name: 🚀 Deploy no Servidor via SSH
+  uses: appleboy/ssh-action@v0.1.10
+  with:
+    host: ${{ secrets.HOST_IP }}
+    username: ${{ secrets.HOST_USERNAME }}
+    key: ${{ secrets.SSH_PRIVATE_KEY }}
+    port: 22
+    timeout: 600
+    command_timeout: 300
+    script_stop: true
+    script: |
+      echo "🚀 Iniciando deploy..."
 
-on:
-  push:
-    branches:
-      - main
+      cd /home/root/avaliacao
 
-jobs:
-  build-test-deploy:
-    runs-on: ubuntu-latest
+      echo "🔄 Atualizando código..."
+      git fetch --all
+      git reset --hard origin/main
 
-    steps:
-      # 1️⃣ Baixar o código
-      - name: ⬇️ Baixar o código
-        uses: actions/checkout@v3
+      echo "🧹 Limpando containers antigos..."
+      docker compose down -v || true
 
-      # 2️⃣ Instalar Docker Compose
-      - name: 🧩 Instalar Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+      echo "🐳 Subindo containers..."
+      docker compose pull
+      docker compose up -d
 
-      # 3️⃣ Subir containers do Docker (para teste local no CI)
-      - name: 🐳 Subir containers
-        run: |
-          docker-compose up -d
-
-      # 4️⃣ Esperar o MySQL inicializar
-      - name: ⏱️ Esperar MySQL
-        run: |
-          echo "Aguardando MySQL iniciar..."
-          sleep 15
-
-      # 5️⃣ Rodar teste de conexão PHP + MySQL
-      - name: 🧪 Testar conexão MySQL
-        run: |
-          docker-compose exec -T app php /var/www/html/ci-test.php
-
-      # 6️⃣ Derrubar containers após o teste
-      - name: 🧹 Derrubar containers
-        if: always()
-        run: docker-compose down
-
-      # 7️⃣ Fazer deploy no servidor (só se o teste acima passou)
-      - name: 🚀 Deploy no Servidor via SSH
-        if: success()
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.HOST_IP }}
-          username: ${{ secrets.HOST_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            echo "Iniciando deploy..."
-            cd /home/root/avaliacao
-
-            # Atualiza código
-            git pull origin main
-
-            # Reinicia containers
-            docker compose down
-            docker compose up -d --build
-
-            echo "✅ Deploy finalizado com sucesso!"
+      echo "✅ Deploy finalizado com sucesso!"
