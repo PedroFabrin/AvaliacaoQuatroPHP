@@ -1,13 +1,15 @@
 <?php
 echo "Iniciando teste de conexão MySQL...\n";
 
-$host = getenv('DB_HOST') ?: 'db';
-$db   = getenv('DB_DATABASE');
-$user = getenv('DB_USERNAME');
-$pass = getenv('DB_PASSWORD');
+// Pega as variáveis do ambiente (tanto DB_* quanto MYSQL_*)
+$host = getenv('DB_HOST') ?: getenv('MYSQL_HOST') ?: 'db';
+$db   = getenv('DB_DATABASE') ?: getenv('MYSQL_DATABASE');
+$user = getenv('DB_USERNAME') ?: getenv('MYSQL_USER');
+$pass = getenv('DB_PASSWORD') ?: getenv('MYSQL_PASSWORD');
 
-if (!$db || !$user || !$pass) {
+if (!$db || !$user) {
     echo "[ERRO] Variáveis de ambiente não configuradas.\n";
+    echo "Host: $host | DB: $db | User: $user | Pass: " . ($pass ? '***' : '(vazio)') . "\n";
     exit(1);
 }
 
