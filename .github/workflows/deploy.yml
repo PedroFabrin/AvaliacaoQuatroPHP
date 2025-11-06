@@ -1,4 +1,78 @@
-name: CI/CD - Deploy na Main
+# name: CI/CD - Deploy na Main
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-test-deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # 1️⃣ Baixar o código
+#       - name: ⬇️ Baixar o código
+#         uses: actions/checkout@v3
+
+#       # 2️⃣ Instalar Docker Compose
+#       - name: 🧩 Instalar Docker Compose
+#         run: |
+#           sudo apt-get update -y
+#           sudo apt-get install -y docker-compose
+
+#       # 3️⃣ Subir containers para teste
+#       - name: 🐳 Subir containers
+#         run: |
+#           docker-compose up -d
+
+#       # 4️⃣ Esperar o MySQL iniciar
+#       - name: ⏱️ Esperar MySQL
+#         run: |
+#           echo "Aguardando MySQL iniciar..."
+#           sleep 15
+
+#       # 5️⃣ Testar conexão PHP + MySQL
+#       - name: 🧪 Testar conexão MySQL
+#         run: |
+#           docker-compose exec -T app php /var/www/html/ci-test.php
+
+#       # 6️⃣ Derrubar containers após o teste
+#       - name: 🧹 Derrubar containers
+#         if: always()
+#         run: docker-compose down -v
+
+#       # 7️⃣ Fazer deploy no servidor via SSH (somente se o teste passou)
+#       - name: 🚀 Deploy no Servidor via SSH
+#         if: success()
+#         uses: appleboy/ssh-action@v0.1.10
+#         with:
+#           host: ${{ secrets.HOST_IP }}
+#           username: ${{ secrets.HOST_USERNAME }}
+#           key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           port: 22
+#           timeout: 600s
+#           command_timeout: 300s
+#           script_stop: true
+#           script: |
+#             echo "🚀 Iniciando deploy..."
+
+#             cd /home/root/avaliacao
+
+#             echo "🔄 Atualizando código..."
+#             git fetch --all
+#             git reset --hard origin/main
+
+#             echo "🧹 Derrubando containers antigos..."
+#             docker compose down -v || true
+
+#             echo "🐳 Subindo containers..."
+#             docker compose pull
+#             docker compose up -d
+
+#             echo "✅ Deploy finalizado com sucesso!"
+
+
+name: Deploy PHP App to VPS
 
 on:
   push:
@@ -6,67 +80,28 @@ on:
       - main
 
 jobs:
-  build-test-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Baixar o código
-      - name: ⬇️ Baixar o código
-        uses: actions/checkout@v3
+    - name: Checkout código
+      uses: actions/checkout@v3
 
-      # 2️⃣ Instalar Docker Compose
-      - name: 🧩 Instalar Docker Compose
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y docker-compose
+    - name: Configurar chave SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.HOST_IP }} >> ~/.ssh/known_hosts
 
-      # 3️⃣ Subir containers para teste
-      - name: 🐳 Subir containers
-        run: |
-          docker-compose up -d
+    - name: Copiar arquivos para o VPS
+      run: |
+        rsync -avz --exclude '.git' --exclude 'node_modules' -e "ssh -i ~/.ssh/id_rsa" ./ ${{ secrets.USERNAME }}@${{ secrets.HOST_IP }}:/home/root/avaliacao
 
-      # 4️⃣ Esperar o MySQL iniciar
-      - name: ⏱️ Esperar MySQL
-        run: |
-          echo "Aguardando MySQL iniciar..."
-          sleep 15
-
-      # 5️⃣ Testar conexão PHP + MySQL
-      - name: 🧪 Testar conexão MySQL
-        run: |
-          docker-compose exec -T app php /var/www/html/ci-test.php
-
-      # 6️⃣ Derrubar containers após o teste
-      - name: 🧹 Derrubar containers
-        if: always()
-        run: docker-compose down -v
-
-      # 7️⃣ Fazer deploy no servidor via SSH (somente se o teste passou)
-      - name: 🚀 Deploy no Servidor via SSH
-        if: success()
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.HOST_IP }}
-          username: ${{ secrets.HOST_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          timeout: 600s
-          command_timeout: 300s
-          script_stop: true
-          script: |
-            echo "🚀 Iniciando deploy..."
-
-            cd /home/root/avaliacao
-
-            echo "🔄 Atualizando código..."
-            git fetch --all
-            git reset --hard origin/main
-
-            echo "🧹 Derrubando containers antigos..."
-            docker compose down -v || true
-
-            echo "🐳 Subindo containers..."
-            docker compose pull
-            docker compose up -d
-
-            echo "✅ Deploy finalizado com sucesso!"
+    - name: Subir containers com Docker Compose
+      run: |
+        ssh -i ~/.ssh/id_rsa ${{ secrets.USERNAME }}@${{ secrets.HOST_IP }} << 'EOF'
+          cd /home/root/avaliacao
+          docker compose down
+          docker compose up -d --build
+        EOF
