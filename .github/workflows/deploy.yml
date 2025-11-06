@@ -17,7 +17,6 @@ jobs:
       # 2️⃣ Subir containers do Docker (para teste local no CI)
       - name: 🐳 Subir containers
         run: |
-          cd /home/root/avaliacao
           docker-compose up -d
 
       # 3️⃣ Esperar o MySQL inicializar
@@ -29,7 +28,6 @@ jobs:
       # 4️⃣ Rodar teste de conexão PHP + MySQL
       - name: 🧪 Testar conexão MySQL
         run: |
-          cd /home/root/avaliacao
           docker-compose exec -T app php /var/www/html/ci-test.php
 
       # 5️⃣ Derrubar containers após o teste
