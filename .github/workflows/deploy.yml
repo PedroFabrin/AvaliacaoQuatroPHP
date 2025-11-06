@@ -44,7 +44,7 @@ jobs:
       # 7️⃣ Fazer deploy no servidor (só se o teste acima passou)
       - name: 🚀 Deploy no Servidor via SSH
         if: success()
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.HOST_IP }}
           username: ${{ secrets.HOST_USERNAME }}
