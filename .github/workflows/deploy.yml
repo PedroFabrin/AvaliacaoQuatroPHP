@@ -50,8 +50,8 @@ jobs:
           username: ${{ secrets.HOST_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          timeout: 600
-          command_timeout: 300
+          timeout: 600s
+          command_timeout: 300s
           script_stop: true
           script: |
             echo "🚀 Iniciando deploy..."
