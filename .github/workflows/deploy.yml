@@ -14,28 +14,34 @@ jobs:
       - name: ⬇️ Baixar o código
         uses: actions/checkout@v3
 
-      # 2️⃣ Subir containers do Docker (para teste local no CI)
+      # 2️⃣ Instalar Docker Compose
+      - name: 🧩 Instalar Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      # 3️⃣ Subir containers do Docker (para teste local no CI)
       - name: 🐳 Subir containers
         run: |
           docker-compose up -d
 
-      # 3️⃣ Esperar o MySQL inicializar
+      # 4️⃣ Esperar o MySQL inicializar
       - name: ⏱️ Esperar MySQL
         run: |
           echo "Aguardando MySQL iniciar..."
           sleep 15
 
-      # 4️⃣ Rodar teste de conexão PHP + MySQL
+      # 5️⃣ Rodar teste de conexão PHP + MySQL
       - name: 🧪 Testar conexão MySQL
         run: |
           docker-compose exec -T app php /var/www/html/ci-test.php
 
-      # 5️⃣ Derrubar containers após o teste
+      # 6️⃣ Derrubar containers após o teste
       - name: 🧹 Derrubar containers
         if: always()
         run: docker-compose down
 
-      # 6️⃣ Fazer deploy no servidor (só se o teste acima passou)
+      # 7️⃣ Fazer deploy no servidor (só se o teste acima passou)
       - name: 🚀 Deploy no Servidor via SSH
         if: success()
         uses: appleboy/ssh-action@master
